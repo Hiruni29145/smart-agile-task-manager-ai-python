@@ -1,22 +1,25 @@
+"""
+preprocessing.py
+
+Handles all dataset loading and preprocessing tasks for the
+AI Task Effort Estimation project.
+"""
+
 import pandas as pd
-from pathlib import Path
+
+from config import DATASET_PATH
 
 
 # ==========================================================
-# Project Paths
+# Dataset Loading
 # ==========================================================
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-DATASET_PATH = PROJECT_ROOT / "dataset" / "agile_task_dataset_ml_read.xlsx"
-
-
-# ==========================================================
-# Load Dataset
-# ==========================================================
-
-def load_dataset():
+def load_dataset() -> pd.DataFrame:
     """
-    Load the Excel dataset into a Pandas DataFrame.
+    Load the Agile task dataset from the configured Excel file.
+
+    Returns:
+        pd.DataFrame: Loaded dataset.
     """
 
     df = pd.read_excel(DATASET_PATH)
@@ -24,7 +27,6 @@ def load_dataset():
     print("=" * 60)
     print("Dataset Loaded Successfully")
     print("=" * 60)
-
     print(f"Rows    : {df.shape[0]}")
     print(f"Columns : {df.shape[1]}")
 
@@ -32,12 +34,15 @@ def load_dataset():
 
 
 # ==========================================================
-# Validate Dataset
+# Dataset Validation
 # ==========================================================
 
-def validate_dataset(df):
+def validate_dataset(df: pd.DataFrame) -> None:
     """
-    Display dataset information and check for missing values.
+    Display basic dataset information.
+
+    Args:
+        df (pd.DataFrame): Dataset to validate.
     """
 
     print("\n" + "=" * 60)
@@ -54,31 +59,45 @@ def validate_dataset(df):
 
 
 # ==========================================================
-# Create Training Text
+# Text Feature Engineering
 # ==========================================================
 
-def create_text_feature(df):
+def create_text_feature(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Combine Task Name and Description into a single text column.
-    This column will later be used for TF-IDF vectorization.
+    Combine Task Name and Description into a single text feature.
+
+    The generated 'text' column is used later for TF-IDF
+    vectorization during model training.
+
+    Args:
+        df (pd.DataFrame): Input dataset.
+
+    Returns:
+        pd.DataFrame: Dataset with the new 'text' column.
     """
 
+    df = df.copy()
+
     df["text"] = (
-        df["Task Name"].astype(str).str.strip()
+        df["Task Name"].fillna("").astype(str).str.strip()
         + " "
-        + df["Description"].astype(str).str.strip()
+        + df["Description"].fillna("").astype(str).str.strip()
     )
 
     return df
 
 
 # ==========================================================
-# Display Sample
+# Preview Processed Data
 # ==========================================================
 
-def display_sample(df):
+def display_sample(df: pd.DataFrame, rows: int = 5) -> None:
     """
-    Display the first 5 rows of the important columns.
+    Display a preview of the generated text feature.
+
+    Args:
+        df (pd.DataFrame): Dataset.
+        rows (int): Number of rows to display.
     """
 
     print("\n" + "=" * 100)
@@ -90,29 +109,43 @@ def display_sample(df):
             [
                 "Task Name",
                 "Description",
-                "text"
+                "text",
             ]
-        ].head(5)
+        ].head(rows)
     )
 
 
 # ==========================================================
-# Main
+# Preprocessing Pipeline
 # ==========================================================
 
-def main():
+def preprocess_dataset(show_preview: bool = True) -> pd.DataFrame:
+    """
+    Execute the complete preprocessing pipeline.
 
-    # Load dataset
+    Steps:
+        1. Load dataset
+        2. Validate dataset
+        3. Create combined text feature
+        4. Display preview (optional)
+
+    Args:
+        show_preview (bool): Display processed samples.
+
+    Returns:
+        pd.DataFrame: Preprocessed dataset.
+    """
+
     df = load_dataset()
 
-    # Validate dataset
     validate_dataset(df)
 
-    # Create combined text column
     df = create_text_feature(df)
 
-    # Display sample
-    display_sample(df)
+    if show_preview:
+        display_sample(df)
+
+    return df
 
 
 # ==========================================================
@@ -120,4 +153,4 @@ def main():
 # ==========================================================
 
 if __name__ == "__main__":
-    main()
+    preprocess_dataset()
