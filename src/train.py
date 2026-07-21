@@ -35,13 +35,16 @@ from trainer import (
     train_hours_model,
 )
 
+from evaluator import (
+    evaluate_model,
+    preview_predictions,
+)
 
 # ==========================================================
 # Main Training Pipeline
 # ==========================================================
 
 def main():
-
     print("\n" + "=" * 60)
     print("SMART AGILE TASK MANAGER AI")
     print("Model Training Pipeline")
@@ -121,6 +124,38 @@ def main():
     )
 
     # ======================================================
+    # Evaluate Story Point Model
+    # ======================================================
+
+    story_results = evaluate_model(
+        story_point_model,
+        X_test_sp,
+        y_test_sp,
+        "Story Point Model"
+    )
+
+    preview_predictions(
+        y_test_sp,
+        story_results["predictions"]
+    )
+
+    # ======================================================
+    # Evaluate Hours Model
+    # ======================================================
+
+    hours_results = evaluate_model(
+        hours_model,
+        X_test_hr,
+        y_test_hr,
+        "Hours Model"
+    )
+
+    preview_predictions(
+        y_test_hr,
+        hours_results["predictions"]
+    )
+
+    # ======================================================
     # Training Complete
     # ======================================================
 
@@ -130,6 +165,7 @@ def main():
 
     print("✓ Story Point Model Trained")
     print("✓ Hours Model Trained")
+
 
 
 # ==========================================================
