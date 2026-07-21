@@ -19,3 +19,16 @@ print(f"Columns: {df.shape[1]}")
 
 print("\nColumns:")
 print(df.columns.tolist())
+
+
+print("\n" + "=" * 60)
+print("Dataset Information")
+print("=" * 60)
+
+df.info()
+
+print("\n" + "=" * 60)
+print("Missing Values")
+print("=" * 60)
+
+print(df.isnull().sum())
