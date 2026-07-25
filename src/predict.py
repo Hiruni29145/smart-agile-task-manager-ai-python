@@ -108,9 +108,23 @@ def predict(
     actual_hours_log = hours_model.predict(X_chained)[0]
     actual_hours = np.expm1(actual_hours_log)
 
+    # Calculate Heuristics
+    if story_points_snapped <= 3:
+        complexity = "Low"
+    elif story_points_snapped == 5:
+        complexity = "Medium"
+    elif story_points_snapped <= 13:
+        complexity = "High"
+    else:
+        complexity = "Very High"
+        
+    confidence = 95 - story_points_snapped
+
     return {
-        "story_points": story_points_snapped,
-        "actual_hours": round(float(actual_hours), 2),
+        "Estimated Hours": f"{round(float(actual_hours), 1)}h",
+        "Story Points": story_points_snapped,
+        "Complexity": complexity,
+        "Confidence Score": f"{confidence}%",
     }
 
 

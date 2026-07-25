@@ -7,10 +7,7 @@ Smart Agile Task Manager AI.
 
 from fastapi import FastAPI
 
-from schemas import (
-    PredictionRequest,
-    PredictionResponse,
-)
+from schemas import PredictionRequest
 
 from predict import predict
 
@@ -37,10 +34,7 @@ def root():
     }
 
 
-@app.post(
-    "/api/predict",
-    response_model=PredictionResponse
-)
+@app.post("/api/predict")
 def estimate_task(request: PredictionRequest):
 
     result = predict(
