@@ -1,0 +1,8 @@
+{
+  "algorithm": "XGBoost",
+  "story_point_r2": 0.321,
+  "hours_r2": 0.177,
+  "training_rows": 3000,
+  "vocabulary_size": 7522,
+  "trained_on": "2026-07-25"
+}

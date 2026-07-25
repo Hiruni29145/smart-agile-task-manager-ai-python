@@ -35,10 +35,10 @@ RANDOM_STATE = 42
 # Random Forest Configuration
 # ==========================================================
 
-N_ESTIMATORS = 30
-MAX_DEPTH = 30
-MIN_SAMPLES_SPLIT = 5
-MIN_SAMPLES_LEAF = 2
+N_ESTIMATORS = 300
+MAX_DEPTH = 50
+MIN_SAMPLES_SPLIT = 2
+MIN_SAMPLES_LEAF = 1
 MAX_FEATURES = "sqrt"
 BOOTSTRAP = True
 N_JOBS = -1
