@@ -35,7 +35,7 @@ RANDOM_STATE = 42
 # Random Forest Configuration
 # ==========================================================
 
-N_ESTIMATORS = 300
+N_ESTIMATORS = 30
 MAX_DEPTH = 30
 MIN_SAMPLES_SPLIT = 5
 MIN_SAMPLES_LEAF = 2
