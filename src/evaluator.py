@@ -28,6 +28,7 @@ def evaluate_model(
     X_test,
     y_test,
     model_name="Model",
+    predictions=None,
 ):
     """
     Evaluate a trained regression model.
@@ -35,7 +36,7 @@ def evaluate_model(
     Parameters
     ----------
     model
-        Trained Random Forest model.
+        Trained regression model.
 
     X_test
         Test feature matrix.
@@ -45,9 +46,13 @@ def evaluate_model(
 
     model_name
         Display name.
+        
+    predictions
+        Optional pre-calculated predictions.
     """
 
-    predictions = model.predict(X_test)
+    if predictions is None:
+        predictions = model.predict(X_test)
 
     mae = mean_absolute_error(
         y_test,

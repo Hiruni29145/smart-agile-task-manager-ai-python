@@ -19,6 +19,8 @@ Pipeline
 11. Train Hours Model
 """
 
+import numpy as np
+
 from preprocess import preprocess_dataset
 
 from feature_engineering import (
@@ -110,49 +112,97 @@ def main():
     )
 
     # ======================================================
-    # Train Models
+    # Train Models (Story Points)
     # ======================================================
 
-    story_point_model = train_story_point_model(
+    sp_model_rf = train_story_point_model(
         X_train_sp,
         y_train_sp,
+        model_type="rf"
     )
 
-    hours_model = train_hours_model(
+    sp_model_xgb = train_story_point_model(
+        X_train_sp,
+        y_train_sp,
+        model_type="xgb"
+    )
+
+    # ======================================================
+    # Train Models (Hours - with Log Transform)
+    # ======================================================
+    
+    y_train_hr_log = np.log1p(y_train_hr)
+
+    hr_model_rf = train_hours_model(
         X_train_hr,
-        y_train_hr,
+        y_train_hr_log,
+        model_type="rf"
+    )
+
+    hr_model_xgb = train_hours_model(
+        X_train_hr,
+        y_train_hr_log,
+        model_type="xgb"
     )
 
     # ======================================================
-    # Evaluate Story Point Model
+    # Evaluate Story Point Models
     # ======================================================
 
-    story_results = evaluate_model(
-        story_point_model,
+    story_results_rf = evaluate_model(
+        sp_model_rf,
         X_test_sp,
         y_test_sp,
-        "Story Point Model"
+        "Story Point Model (RF)"
     )
-
     preview_predictions(
         y_test_sp,
-        story_results["predictions"]
+        story_results_rf["predictions"]
+    )
+
+    story_results_xgb = evaluate_model(
+        sp_model_xgb,
+        X_test_sp,
+        y_test_sp,
+        "Story Point Model (XGB)"
+    )
+    preview_predictions(
+        y_test_sp,
+        story_results_xgb["predictions"]
     )
 
     # ======================================================
-    # Evaluate Hours Model
+    # Evaluate Hours Models (Reverse Log Transform)
     # ======================================================
 
-    hours_results = evaluate_model(
-        hours_model,
+    hr_preds_rf_log = hr_model_rf.predict(X_test_hr)
+    hr_preds_rf = np.expm1(hr_preds_rf_log)
+    
+    hours_results_rf = evaluate_model(
+        hr_model_rf,
         X_test_hr,
         y_test_hr,
-        "Hours Model"
+        "Hours Model (RF)",
+        predictions=hr_preds_rf
     )
-
     preview_predictions(
         y_test_hr,
-        hours_results["predictions"]
+        hours_results_rf["predictions"]
+    )
+
+    hr_preds_xgb_log = hr_model_xgb.predict(X_test_hr)
+    hr_preds_xgb = np.expm1(hr_preds_xgb_log)
+
+    hours_results_xgb = evaluate_model(
+        hr_model_xgb,
+        X_test_hr,
+        y_test_hr,
+        "Hours Model (XGB)",
+        predictions=hr_preds_xgb
+    )
+    preview_predictions(
+        y_test_hr,
+        hours_results_xgb["predictions"]
     )
 
     # ======================================================
@@ -163,8 +213,8 @@ def main():
     print("Training Pipeline Completed Successfully")
     print("=" * 60)
 
-    print("✓ Story Point Model Trained")
-    print("✓ Hours Model Trained")
+    print("[OK] Story Point Models Trained (RF & XGB)")
+    print("[OK] Hours Models Trained (RF & XGB)")
 
 
 

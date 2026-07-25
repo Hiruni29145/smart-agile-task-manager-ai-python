@@ -13,6 +13,7 @@ Responsibilities
 
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
+from xgboost import XGBRegressor
 
 from config import (
     TEST_SIZE,
@@ -81,23 +82,46 @@ def create_random_forest():
 
 
 # ==========================================================
+# Create XGBoost Model
+# ==========================================================
+
+def create_xgboost_model():
+    """
+    Create an XGBoost model.
+    """
+
+    return XGBRegressor(
+        n_estimators=N_ESTIMATORS,
+        max_depth=MAX_DEPTH,
+        random_state=RANDOM_STATE,
+        n_jobs=N_JOBS,
+        learning_rate=0.1,
+        subsample=0.8,
+        colsample_bytree=0.8,
+    )
+
+
+# ==========================================================
 # Story Point Model
 # ==========================================================
 
-def train_story_point_model(X_train, y_train):
+def train_story_point_model(X_train, y_train, model_type="rf"):
     """
     Train the Story Point prediction model.
     """
 
     print("\n" + "=" * 60)
-    print("Training Story Point Model")
+    print(f"Training Story Point Model ({model_type.upper()})")
     print("=" * 60)
 
-    model = create_random_forest()
+    if model_type == "xgb":
+        model = create_xgboost_model()
+    else:
+        model = create_random_forest()
 
     model.fit(X_train, y_train)
 
-    print("✓ Story Point Model Training Completed.")
+    print("[OK] Story Point Model Training Completed.")
 
     return model
 
@@ -106,19 +130,22 @@ def train_story_point_model(X_train, y_train):
 # Hours Model
 # ==========================================================
 
-def train_hours_model(X_train, y_train):
+def train_hours_model(X_train, y_train, model_type="rf"):
     """
     Train the Actual Hours prediction model.
     """
 
     print("\n" + "=" * 60)
-    print("Training Hours Model")
+    print(f"Training Hours Model ({model_type.upper()})")
     print("=" * 60)
 
-    model = create_random_forest()
+    if model_type == "xgb":
+        model = create_xgboost_model()
+    else:
+        model = create_random_forest()
 
     model.fit(X_train, y_train)
 
-    print("✓ Hours Model Training Completed.")
+    print("[OK] Hours Model Training Completed.")
 
     return model
