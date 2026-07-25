@@ -1,13 +1,57 @@
+"""
+config.py
+
+Central configuration for the
+Smart Agile Task Manager AI project.
+"""
+
 from pathlib import Path
+
+
+# ==========================================================
+# Project Paths
+# ==========================================================
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-DATASET_PATH = PROJECT_ROOT / "dataset" / "agile_task_dataset_ml_read.xlsx"
+DATASET_PATH = (
+    PROJECT_ROOT
+    / "dataset"
+    / "agile_task_dataset_ml_read.xlsx"
+)
 
 MODEL_DIR = PROJECT_ROOT / "models"
 
-TEST_SIZE = 0.2
+
+# ==========================================================
+# Train/Test Configuration
+# ==========================================================
+
+TEST_SIZE = 0.20
 RANDOM_STATE = 42
 
-N_ESTIMATORS = 20
+
+# ==========================================================
+# Random Forest Configuration
+# ==========================================================
+
+N_ESTIMATORS = 300
+MAX_DEPTH = 30
+MIN_SAMPLES_SPLIT = 5
+MIN_SAMPLES_LEAF = 2
+MAX_FEATURES = "sqrt"
+BOOTSTRAP = True
 N_JOBS = -1
+
+
+# ==========================================================
+# TF-IDF Configuration
+# ==========================================================
+
+LOWERCASE = True
+STOP_WORDS = "english"
+NGRAM_RANGE = (1, 2)
+MIN_DF = 2
+MAX_DF = 0.95
+SUBLINEAR_TF = True
+STRIP_ACCENTS = "unicode"

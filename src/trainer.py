@@ -4,7 +4,8 @@ trainer.py
 Handles all model training tasks for the
 AI Task Effort Estimation project.
 
-Responsibilities:
+Responsibilities
+----------------
 - Train/Test Split
 - Story Point Model Training
 - Actual Hours Model Training
@@ -16,7 +17,13 @@ from sklearn.model_selection import train_test_split
 from config import (
     TEST_SIZE,
     RANDOM_STATE,
-    N_ESTIMATORS
+    N_ESTIMATORS,
+    MAX_DEPTH,
+    MIN_SAMPLES_SPLIT,
+    MIN_SAMPLES_LEAF,
+    MAX_FEATURES,
+    BOOTSTRAP,
+    N_JOBS,
 )
 
 
@@ -26,30 +33,15 @@ from config import (
 
 def split_dataset(X, y):
     """
-    Split a dataset into training and testing sets.
-
-    Parameters
-    ----------
-    X
-        Feature matrix.
-
-    y
-        Target variable.
-
-    Returns
-    -------
-    tuple
-        X_train
-        X_test
-        y_train
-        y_test
+    Split the dataset into training and testing sets.
     """
 
     X_train, X_test, y_train, y_test = train_test_split(
         X,
         y,
         test_size=TEST_SIZE,
-        random_state=RANDOM_STATE
+        random_state=RANDOM_STATE,
+        shuffle=True,
     )
 
     print("\n" + "=" * 60)
@@ -63,7 +55,28 @@ def split_dataset(X, y):
         X_train,
         X_test,
         y_train,
-        y_test
+        y_test,
+    )
+
+
+# ==========================================================
+# Create Random Forest Model
+# ==========================================================
+
+def create_random_forest():
+    """
+    Create a tuned Random Forest model.
+    """
+
+    return RandomForestRegressor(
+        n_estimators=N_ESTIMATORS,
+        max_depth=MAX_DEPTH,
+        min_samples_split=MIN_SAMPLES_SPLIT,
+        min_samples_leaf=MIN_SAMPLES_LEAF,
+        max_features=MAX_FEATURES,
+        bootstrap=BOOTSTRAP,
+        random_state=RANDOM_STATE,
+        n_jobs=N_JOBS,
     )
 
 
@@ -71,87 +84,41 @@ def split_dataset(X, y):
 # Story Point Model
 # ==========================================================
 
-def train_story_point_model(
-    X_train,
-    y_train
-):
+def train_story_point_model(X_train, y_train):
     """
     Train the Story Point prediction model.
-
-    Parameters
-    ----------
-    X_train
-        Training feature matrix.
-
-    y_train
-        Story Point target values.
-
-    Returns
-    -------
-    RandomForestRegressor
-        Trained Story Point model.
     """
 
     print("\n" + "=" * 60)
     print("Training Story Point Model")
     print("=" * 60)
 
-    model = RandomForestRegressor(
-        n_estimators=N_ESTIMATORS,
-        random_state=RANDOM_STATE,
-        n_jobs=-1
-    )
+    model = create_random_forest()
 
-    model.fit(
-        X_train,
-        y_train
-    )
+    model.fit(X_train, y_train)
 
-    print("Story Point Model Training Completed.")
+    print("✓ Story Point Model Training Completed.")
 
     return model
 
 
 # ==========================================================
-# Actual Hours Model
+# Hours Model
 # ==========================================================
 
-def train_hours_model(
-    X_train,
-    y_train
-):
+def train_hours_model(X_train, y_train):
     """
     Train the Actual Hours prediction model.
-
-    Parameters
-    ----------
-    X_train
-        Training feature matrix.
-
-    y_train
-        Actual Hours target values.
-
-    Returns
-    -------
-    RandomForestRegressor
-        Trained Hours prediction model.
     """
 
     print("\n" + "=" * 60)
     print("Training Hours Model")
     print("=" * 60)
 
-    model = RandomForestRegressor(
-        n_estimators=N_ESTIMATORS,
-        random_state=RANDOM_STATE,
-        n_jobs=-1
-    )
+    model = create_random_forest()
 
-    model.fit(
-        X_train,
-        y_train
-    )
+    model.fit(X_train, y_train)
 
-    print("Hours Model Training Completed.")
+    print("✓ Hours Model Training Completed.")
 
     return model

@@ -4,7 +4,8 @@ feature_engineering.py
 Handles all feature engineering tasks for the
 AI Task Effort Estimation project.
 
-Responsibilities:
+Responsibilities
+----------------
 - TF-IDF Vectorization
 - Priority Encoding
 - Task Type Encoding
@@ -20,6 +21,16 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import OrdinalEncoder
 
+from config import (
+    LOWERCASE,
+    STOP_WORDS,
+    STRIP_ACCENTS,
+    NGRAM_RANGE,
+    MIN_DF,
+    MAX_DF,
+    SUBLINEAR_TF,
+)
+
 
 # ==========================================================
 # TF-IDF Vectorization
@@ -27,21 +38,18 @@ from sklearn.preprocessing import OrdinalEncoder
 
 def vectorize_text(df: pd.DataFrame):
     """
-    Convert the combined text feature into TF-IDF vectors.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        Dataset containing the 'text' column.
-
-    Returns
-    -------
-    tuple
-        X_text      : Sparse TF-IDF matrix
-        vectorizer  : Trained TF-IDF Vectorizer
+    Convert task text into TF-IDF vectors.
     """
 
-    vectorizer = TfidfVectorizer()
+    vectorizer = TfidfVectorizer(
+        lowercase=LOWERCASE,
+        stop_words=STOP_WORDS,
+        strip_accents=STRIP_ACCENTS,
+        ngram_range=NGRAM_RANGE,
+        min_df=MIN_DF,
+        max_df=MAX_DF,
+        sublinear_tf=SUBLINEAR_TF,
+    )
 
     X_text = vectorizer.fit_transform(df["text"])
 
@@ -66,17 +74,10 @@ def encode_priority(df: pd.DataFrame):
     """
     Encode Priority using Ordinal Encoding.
 
-    Order:
-        Low -> 0
-        Medium -> 1
-        High -> 2
-        Critical -> 3
-
-    Returns
-    -------
-    tuple
-        priority_encoded
-        priority_encoder
+    Low -> 0
+    Medium -> 1
+    High -> 2
+    Critical -> 3
     """
 
     priority_encoder = OrdinalEncoder(
@@ -113,12 +114,6 @@ def encode_priority(df: pd.DataFrame):
 def encode_task_type(df: pd.DataFrame):
     """
     Encode Task Type using One-Hot Encoding.
-
-    Returns
-    -------
-    tuple
-        task_type_encoded
-        task_type_encoder
     """
 
     task_type_encoder = OneHotEncoder(
@@ -164,20 +159,15 @@ def build_feature_matrix(
     task_type_encoded
 ):
     """
-    Combine all engineered features into a single matrix.
+    Combine all engineered features into one sparse matrix.
 
-    Feature Matrix Structure
+    Feature Order
 
-        TF-IDF Features
-                +
-        Priority
-                +
-        Task Type
-
-    Returns
-    -------
-    scipy.sparse matrix
-        Final feature matrix (X)
+    TF-IDF
+        +
+    Priority
+        +
+    Task Type
     """
 
     priority_sparse = csr_matrix(priority_encoded)
@@ -186,7 +176,7 @@ def build_feature_matrix(
         X_text,
         priority_sparse,
         task_type_encoded
-    ])
+    ]).tocsr()
 
     print("\n" + "=" * 60)
     print("Final Feature Matrix")
@@ -204,13 +194,7 @@ def build_feature_matrix(
 
 def get_target_variables(df: pd.DataFrame):
     """
-    Extract target variables used for model training.
-
-    Returns
-    -------
-    tuple
-        y_story_points
-        y_actual_hours
+    Extract target variables.
     """
 
     y_story_points = df["Story Points"]
