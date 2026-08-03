@@ -22,7 +22,7 @@ COPY . .
 EXPOSE 8000
 
 # Set Python path so it finds the src module
-ENV PYTHONPATH=/app
+ENV PYTHONPATH=/app/src
 
 # Command to run the application
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
