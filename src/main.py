@@ -12,6 +12,8 @@ from schemas import PredictionRequest
 from predict import predict
 
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI(
 
     title="Smart Agile Task Manager AI",
@@ -19,6 +21,14 @@ app = FastAPI(
     version="1.0.0",
 
     description="Story Point & Hours Prediction API",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://agile-smart.hiruni.site"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
