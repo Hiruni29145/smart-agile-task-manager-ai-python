@@ -1,0 +1,43 @@
+name: Deploy to EC2 (Docker)
+
+on:
+  push:
+    branches:
+      - main # Or your default branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to EC2 using Docker
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Navigate to the project directory
+            cd ~/hiruni/python-ai
+            
+            # Pull the latest changes from the main branch
+            git pull origin main
+            
+            # Build the new Docker image
+            docker build -t python-ai-image .
+            
+            # Stop and remove the existing container if it's running
+            docker stop python-ai-app || true
+            docker rm python-ai-app || true
+            
+            # Run the new container
+            docker run -d \
+              --name python-ai-app \
+              -p 8000:8000 \
+              --restart unless-stopped \
+              python-ai-image
+            
+            # Clean up old unused images to save disk space
+            docker image prune -f
+            
+            echo "Deployment successful!"
