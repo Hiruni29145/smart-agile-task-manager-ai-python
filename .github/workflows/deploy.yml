@@ -10,6 +10,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Copy files to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "."
+          target: "~/hiruni/python-ai"
+
       - name: Deploy to EC2 using Docker
         uses: appleboy/ssh-action@master
         with:
@@ -19,9 +31,6 @@ jobs:
           script: |
             # Navigate to the project directory
             cd ~/hiruni/python-ai
-            
-            # Pull the latest changes from the main branch
-            git pull origin main
             
             # Build the new Docker image
             docker build -t python-ai-image .
