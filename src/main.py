@@ -25,12 +25,8 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://agile-smart.hiruni.site", 
-        "https://smart-agile.hiruni.site",
-        "https://smart-agile.hiruni.site/"
-    ],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
