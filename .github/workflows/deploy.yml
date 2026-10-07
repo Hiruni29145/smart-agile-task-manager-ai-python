@@ -16,18 +16,72 @@ jobs:
       - name: Copy files to EC2
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          host: 18.143.156.189
+          username: ubuntu
+          key: |
+            -----BEGIN RSA PRIVATE KEY-----
+            MIIEpAIBAAKCAQEA1RbNolINXBp8YFpXayR6TWaRFDhbV9kvX5xrkx8xfXEWKsmo
+            iBzD02UT1hQiWiZ5QV2CbAakouEh9gAfWlXygj3q7LPUY/WEvXhTBLaFG1Uelx3X
+            mdtdLkpLBODIPSyNMssZURtGJfDMwyvz/JbAFn7G3YzZNYiJcLsI90TCsyXQR4UT
+            W5KqqxfOp9/33j4kEz9zre40FSltduGI7OSjjbBDmqqmlCbnFOPVDe0UpbAg/LnH
+            WzzpFZCyrgtxNFlZ+8d0EXl1MwO22QcY02pYrFr3PoDeOA50DSTZHdkqLeRrxUrk
+            DlXG7wnj4H/Oik/8YPQ5Fa/doTUppYnuS7d8LwIDAQABAoIBABCOaQPHpEoXtLo3
+            yrsEZoxE/9i2WEKHGWswWBtiPRImCzbf3DxXH8/49oWXouOmQZ2Wil+iVIBjRaQ7
+            djQqoWEFNo+VmVb66IlgI/Mly0nIX0wWgX3u0VqbYyDJ5kT6hS4BIcJvgA/Kmd5A
+            OADUJbCZwRHNs8K5DRS5M4Uizo3kqdvyHoTPEUxkrLl4tpOjypn2A2+75S3Vr7ud
+            /MviiE2zkBktMLVDP8jbsBoRR5xZjA+vmLgILEXQDWF6Fa5lGukAlCc0xfE0EnMV
+            4MECRpQG8M5brtyQnDOgFHVkVQeYYjTzL4Dn+W3sY2gQ73wEtah5X0/NluBeiLD/
+            N14CCCECgYEA+oX9uJVktfM31GzoEI22qZirn/tgpt/q75TdBsrhfPp461Kwk899
+            34IE6LZs/sQq0V9UgCc8jCld1uw7Qg78BTkZz4ZaVJ9QgD464FNKcYzRtcogqzwP
+            bHPeXIDh3VCvidwn2LTzFdY62YgXrKUbbaMrhbgyoechQbTrBZ/1ikMCgYEA2b9R
+            VgBrL3dsfXDKc92VCmDORtb8T8kcBl00jOXqzuJBTzHKhN6asufC7A1tGQRAtx6E
+            1JhOLFuXcuhACbegB9WbfFWVHXYJgKbY5eeJ5zVhMeeU03MS5mfKZ2x2Eox+mHE2
+            IEJJCOHRL4akfCQjyDJE/baH9T5Um1gxFxA8taUCgYBQplYZ2C5FzPjKMA09VwHY
+            80c9B4YD8s4FNt041JNm0pOe3k3uJ7wT+h1udVv9YFWQdaoUX41EagTFreMdzwke
+            /VTr1Aq8d1VJE7+MfAPZLkZMybdeqMUmWt7Y1LzhrJn2PaOuRgKDoyXq5b8JW1XL
+            I95c/AGA0ZGJP57xfp9jVQKBgQCvo0m5REcxF3R0TomPIjm5EFLzAzCsLr0jSQU9
+            bauUSx6BAdmoiWJhUt6Ax2er2SlWTBC650uPLiYgcsRM0kgMabmsdd/8zpxloK+t
+            6rDqxbzrozABy32ASlISUIOA/MCUuCT/qlf9CSFR45pD5GbUcfACcryCDk/yqhWW
+            0+sUXQKBgQCqhyyL+Esa71MeqdZF3QDuyxiwfyXnvweahbV7uU4Qfg3CgQ6Dd6SW
+            U3vc8usRUoNmSi5X0qCL3k7RX+d/xy5pc6pfKHeIoE03Aabj+TnhWAHW1xek0dOY
+            vyz7Y8MwbyEQt3FiYo2Akmg7MVmh57VwWDANjjnZfMKPfOVPurESPA==
+            -----END RSA PRIVATE KEY-----
           source: "."
           target: "~/hiruni/python-ai"
 
       - name: Deploy to EC2 using Docker
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          host: 18.143.156.189
+          username: ubuntu
+          key: |
+            -----BEGIN RSA PRIVATE KEY-----
+            MIIEpAIBAAKCAQEA1RbNolINXBp8YFpXayR6TWaRFDhbV9kvX5xrkx8xfXEWKsmo
+            iBzD02UT1hQiWiZ5QV2CbAakouEh9gAfWlXygj3q7LPUY/WEvXhTBLaFG1Uelx3X
+            mdtdLkpLBODIPSyNMssZURtGJfDMwyvz/JbAFn7G3YzZNYiJcLsI90TCsyXQR4UT
+            W5KqqxfOp9/33j4kEz9zre40FSltduGI7OSjjbBDmqqmlCbnFOPVDe0UpbAg/LnH
+            WzzpFZCyrgtxNFlZ+8d0EXl1MwO22QcY02pYrFr3PoDeOA50DSTZHdkqLeRrxUrk
+            DlXG7wnj4H/Oik/8YPQ5Fa/doTUppYnuS7d8LwIDAQABAoIBABCOaQPHpEoXtLo3
+            yrsEZoxE/9i2WEKHGWswWBtiPRImCzbf3DxXH8/49oWXouOmQZ2Wil+iVIBjRaQ7
+            djQqoWEFNo+VmVb66IlgI/Mly0nIX0wWgX3u0VqbYyDJ5kT6hS4BIcJvgA/Kmd5A
+            OADUJbCZwRHNs8K5DRS5M4Uizo3kqdvyHoTPEUxkrLl4tpOjypn2A2+75S3Vr7ud
+            /MviiE2zkBktMLVDP8jbsBoRR5xZjA+vmLgILEXQDWF6Fa5lGukAlCc0xfE0EnMV
+            4MECRpQG8M5brtyQnDOgFHVkVQeYYjTzL4Dn+W3sY2gQ73wEtah5X0/NluBeiLD/
+            N14CCCECgYEA+oX9uJVktfM31GzoEI22qZirn/tgpt/q75TdBsrhfPp461Kwk899
+            34IE6LZs/sQq0V9UgCc8jCld1uw7Qg78BTkZz4ZaVJ9QgD464FNKcYzRtcogqzwP
+            bHPeXIDh3VCvidwn2LTzFdY62YgXrKUbbaMrhbgyoechQbTrBZ/1ikMCgYEA2b9R
+            VgBrL3dsfXDKc92VCmDORtb8T8kcBl00jOXqzuJBTzHKhN6asufC7A1tGQRAtx6E
+            1JhOLFuXcuhACbegB9WbfFWVHXYJgKbY5eeJ5zVhMeeU03MS5mfKZ2x2Eox+mHE2
+            IEJJCOHRL4akfCQjyDJE/baH9T5Um1gxFxA8taUCgYBQplYZ2C5FzPjKMA09VwHY
+            80c9B4YD8s4FNt041JNm0pOe3k3uJ7wT+h1udVv9YFWQdaoUX41EagTFreMdzwke
+            /VTr1Aq8d1VJE7+MfAPZLkZMybdeqMUmWt7Y1LzhrJn2PaOuRgKDoyXq5b8JW1XL
+            I95c/AGA0ZGJP57xfp9jVQKBgQCvo0m5REcxF3R0TomPIjm5EFLzAzCsLr0jSQU9
+            bauUSx6BAdmoiWJhUt6Ax2er2SlWTBC650uPLiYgcsRM0kgMabmsdd/8zpxloK+t
+            6rDqxbzrozABy32ASlISUIOA/MCUuCT/qlf9CSFR45pD5GbUcfACcryCDk/yqhWW
+            0+sUXQKBgQCqhyyL+Esa71MeqdZF3QDuyxiwfyXnvweahbV7uU4Qfg3CgQ6Dd6SW
+            U3vc8usRUoNmSi5X0qCL3k7RX+d/xy5pc6pfKHeIoE03Aabj+TnhWAHW1xek0dOY
+            vyz7Y8MwbyEQt3FiYo2Akmg7MVmh57VwWDANjjnZfMKPfOVPurESPA==
+            -----END RSA PRIVATE KEY-----
           script: |
             # Navigate to the project directory
             cd ~/hiruni/python-ai
